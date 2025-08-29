@@ -17,6 +17,7 @@ let currentOptimization = null;
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
+    initializeTabNavigation();
     initializeMaps();
     initializeCharts();
     initializeSimulation();
@@ -171,43 +172,80 @@ function initializeFireClickRipples() {
 function initializeNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // Smooth scroll navigation
+    // Handle navigation links - for multi-page setup, they should navigate to different pages
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // If it's a hash link (single page), prevent default and scroll
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            // Otherwise, let the browser handle the page navigation
+        });
+    });
+
+    // Update active nav based on current page
+    updateActiveNavigation();
+}
+
+function updateActiveNavigation() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        link.classList.remove('active');
+        
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage === '/' && linkHref === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Tab Navigation functionality
+function initializeTabNavigation() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
             e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
+            const targetTab = button.getAttribute('data-tab');
 
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
 
-                // Update active nav link
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
+            // Add active class to clicked tab and corresponding content
+            button.classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
             }
         });
     });
+}
 
-    // Update active nav on scroll
-    window.addEventListener('scroll', () => {
-        const sections = document.querySelectorAll('.section');
-        const scrollPos = window.scrollY + 100;
+// Helper function for scrolling to sections (used by quick action buttons)
+function scrollToSection(sectionId) {
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
-        sections.forEach(section => {
-            const top = section.offsetTop;
-            const bottom = top + section.offsetHeight;
-            const id = section.getAttribute('id');
-
-            if (scrollPos >= top && scrollPos <= bottom) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${id}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    });
+// Helper function for downloading reports
+function downloadReport() {
+    showToast('Daily risk summary report download started', 'info');
 }
 
 // Initialize maps

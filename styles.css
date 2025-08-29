@@ -3420,6 +3420,339 @@ body::after {
     overflow-x: hidden;
 }
 
+/* Feature Navigation Cards */
+.feature-navigation {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.feature-navigation h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #F8FAFC;
+    margin-bottom: 2rem;
+}
+
+.feature-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 69, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(255, 69, 0, 0.2);
+    text-decoration: none;
+    color: inherit;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255, 69, 0, 0.3), rgba(255, 140, 0, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF4500;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 8px 16px rgba(255, 69, 0, 0.3);
+}
+
+.feature-content h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #F8FAFC;
+    margin-bottom: 0.5rem;
+}
+
+.feature-content p {
+    color: #94A3B8;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #94A3B8;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.tab-btn:hover {
+    color: #FF4500;
+    background: rgba(255, 69, 0, 0.1);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #FF4500, #FF8C00);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 69, 0, 0.4);
+}
+
+.tab-btn i {
+    font-size: 1rem;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Analytics Cards */
+.analytics-overview {
+    margin-bottom: 3rem;
+}
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.analytics-card {
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(255, 69, 0, 0.15);
+}
+
+.analytics-card .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 69, 0, 0.3), rgba(255, 140, 0, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF4500;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+
+.analytics-card h3 {
+    color: #F8FAFC;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.performance-chart-container,
+.timeline-chart-container,
+.spread-chart-container,
+.alert-chart-container {
+    height: 200px;
+    margin-bottom: 1rem;
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.alert-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.alert-metric {
+    text-align: center;
+}
+
+.alert-metric .metric-label {
+    display: block;
+    color: #94A3B8;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.alert-metric .metric-value {
+    display: block;
+    color: #FF4500;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Data Source Details */
+.data-source-details {
+    margin-top: 3rem;
+}
+
+.detail-panel {
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.detail-panel h3 {
+    color: #F8FAFC;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.integration-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.integration-stats .stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 69, 0, 0.1);
+}
+
+.integration-stats .stat-label {
+    display: block;
+    color: #94A3B8;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.integration-stats .stat-value {
+    display: block;
+    color: #FF4500;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Report Generation */
+.report-generation {
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.report-generation .panel-header h3 {
+    color: #F8FAFC;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.report-generation .panel-header p {
+    color: #94A3B8;
+    margin-bottom: 2rem;
+}
+
+.report-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive Design for Multi-page Layout */
+@media (max-width: 1200px) {
+    .feature-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .tab-navigation {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .tab-btn {
+        justify-content: center;
+    }
+    
+    .integration-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .report-options {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 @keyframes fadeInUp {
     to {
         opacity: 1;

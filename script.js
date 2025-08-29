@@ -17,6 +17,7 @@ let currentOptimization = null;
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
+    initializeSidebar();
     initializeTabNavigation();
     initializeMaps();
     initializeCharts();
@@ -50,6 +51,42 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fire theme initialization
+// Sidebar functionality
+function initializeSidebar() {
+    // Set active sidebar link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav-link');
+    
+    sidebarLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
+    });
+
+    // Update sidebar timestamp
+    updateSidebarTime();
+    setInterval(updateSidebarTime, 60000); // Update every minute
+}
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('open');
+    }
+}
+
+function updateSidebarTime() {
+    const sidebarTimeEl = document.getElementById('sidebar-update-time');
+    const headerTimeEl = document.getElementById('header-update-time');
+    const now = new Date();
+    const timeAgo = Math.floor((Date.now() - (now.getTime() - 2 * 60 * 1000)) / 60000);
+    const timeText = `${timeAgo} min ago`;
+    
+    if (sidebarTimeEl) sidebarTimeEl.textContent = timeText;
+    if (headerTimeEl) headerTimeEl.textContent = timeText;
+}
+
 function initializeForestFireTheme() {
     // Add fire effect overlay with animated particles
     const fireOverlay = document.createElement('div');

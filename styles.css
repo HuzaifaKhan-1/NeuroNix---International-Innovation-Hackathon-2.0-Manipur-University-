@@ -4540,6 +4540,27 @@ body::after {
     .condition-value {
         font-size: 0.8rem;
     }
+    
+    .regional-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .region-header {
+        min-height: 2.75rem;
+        padding: 0.5rem 0 0.5rem 0;
+        gap: 0.5rem;
+    }
+    
+    .region-name {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+    
+    .risk-badge {
+        font-size: 0.6rem;
+        padding: 0.35rem 0.6rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -4581,6 +4602,37 @@ body::after {
     .condition-location {
         font-size: 0.8rem;
     }
+    
+    .regional-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .region-card {
+        min-height: 170px;
+        padding: 1rem 1rem 1.25rem 1rem;
+    }
+    
+    .region-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        min-height: auto;
+        padding: 0.5rem 0;
+        margin-bottom: 0.75rem;
+    }
+    
+    .region-name {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+        width: 100%;
+    }
+    
+    .risk-badge {
+        align-self: flex-start;
+        font-size: 0.65rem;
+        padding: 0.4rem 0.7rem;
+    }
 }
 
 /* Regional Summary */
@@ -4603,13 +4655,13 @@ body::after {
 .region-card {
     background: rgba(30, 41, 59, 0.8);
     border-radius: 12px;
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem 1.25rem 1.5rem 1.25rem;
     border: 1px solid transparent;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     border-left: 4px solid;
-    min-height: 180px;
+    min-height: 190px;
 }
 
 .region-card.very-high-risk {
@@ -4639,23 +4691,27 @@ body::after {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1rem;
-    padding-top: 0.5rem;
-    min-height: 2.5rem;
+    padding: 0.75rem 0 0.5rem 0;
+    min-height: 3rem;
+    gap: 0.75rem;
 }
 
 .region-name {
     font-weight: 700;
     color: #F8FAFC;
     font-size: 1rem;
-    line-height: 1.2;
+    line-height: 1.3;
     flex: 1;
-    margin-right: 0.5rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    display: flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding-top: 0.25rem;
 }
 
 .risk-badge {
-    padding: 0.3rem 0.6rem;
+    padding: 0.4rem 0.7rem;
     border-radius: 8px;
     font-size: 0.65rem;
     font-weight: 600;
@@ -4663,7 +4719,10 @@ body::after {
     letter-spacing: 0.3px;
     white-space: nowrap;
     flex-shrink: 0;
-    line-height: 1;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    min-height: 1.5rem;
 }
 
 .risk-badge.very-high {

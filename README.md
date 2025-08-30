@@ -47,7 +47,7 @@ This project is designed to **predict, simulate, monitor, and assist evacuation*
   <img width="1526" height="761" alt="image" src="https://github.com/user-attachments/assets/eef17dbd-a6d7-4b3c-87e8-8ef9f5a237e4" />
 
 
-### 🧊 3D Visualization  
+### 🧊 3D/AR Visualization  
 - Immersive fire behavior visualization.  
 - Provides a clearer understanding of spread dynamics.
   <img width="1336" height="817" alt="image" src="https://github.com/user-attachments/assets/f84779a3-21b8-4e32-b9a3-27aef40dfe05" />

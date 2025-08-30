@@ -6042,7 +6042,7 @@ body::after {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
-    align-items: start;
+    align-items: stretch;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -6056,8 +6056,7 @@ body::after {
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 69, 0, 0.2);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    min-height: 500px;
-    max-height: none;
+    height: 700px;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -6252,6 +6251,15 @@ body::after {
     font-size: 2rem;
     font-weight: 700;
     z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .score-max {
@@ -6259,6 +6267,7 @@ body::after {
     font-size: 1.2rem;
     font-weight: 500;
     z-index: 1;
+    margin-top: 2px;
 }
 
 .score-label {

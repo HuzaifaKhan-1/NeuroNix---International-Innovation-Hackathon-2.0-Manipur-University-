@@ -6045,13 +6045,15 @@ body::after {
 .impact-visualization {
     background: rgba(30, 41, 59, 0.85);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 1.5rem;
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 69, 0, 0.2);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    height: 650px;
+    min-height: 500px;
+    max-height: none;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 
@@ -6072,20 +6074,22 @@ body::after {
 .emissions-summary {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
     flex-shrink: 0;
 }
 
 .emission-metric {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
+    gap: 0.75rem;
+    padding: 1rem;
     background: rgba(15, 23, 42, 0.6);
     border-radius: 12px;
     border: 1px solid rgba(255, 69, 0, 0.1);
     transition: all 0.3s ease;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .emission-metric:hover {
@@ -6095,15 +6099,15 @@ body::after {
 }
 
 .emission-metric .metric-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
     background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(239, 68, 68, 0.2));
     display: flex;
     align-items: center;
     justify-content: center;
     color: #F59E0B;
-    font-size: 1.2rem;
+    font-size: 1rem;
     flex-shrink: 0;
 }
 
@@ -6111,22 +6115,29 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    min-width: 0;
+    flex: 1;
 }
 
 .emission-metric .metric-value {
     color: #F59E0B;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .emission-metric .metric-label {
     color: #94A3B8;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .emissions-chart-container {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -6135,12 +6146,12 @@ body::after {
 
 .emissions-chart-container h4 {
     color: #CBD5E1;
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
 .emissions-chart-container canvas {
-    height: 200px !important;
+    height: 180px !important;
     background: rgba(15, 23, 42, 0.4);
     border-radius: 8px;
     border: 1px solid rgba(255, 69, 0, 0.1);
@@ -6252,18 +6263,20 @@ body::after {
 .impact-categories {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .impact-category {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
     background: rgba(15, 23, 42, 0.6);
     border-radius: 8px;
     border: 1px solid rgba(255, 69, 0, 0.1);
     transition: all 0.3s ease;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .impact-category:hover {
@@ -6272,33 +6285,39 @@ body::after {
 }
 
 .impact-category .category-icon {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
     background: linear-gradient(135deg, rgba(255, 69, 0, 0.3), rgba(255, 140, 0, 0.2));
     display: flex;
     align-items: center;
     justify-content: center;
     color: #FF4500;
-    font-size: 1rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
+    margin-top: 0.25rem;
 }
 
 .category-info {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    min-width: 0;
+    flex: 1;
 }
 
 .category-label {
     color: #94A3B8;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    word-wrap: break-word;
 }
 
 .category-value {
     color: #F8FAFC;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .recovery-timeline {
@@ -7866,19 +7885,35 @@ body::after {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
+
+    .carbon-emissions-panel,
+    .environmental-impact-panel,
+    .impact-visualization {
+        min-height: 400px;
+    }
 }
 
 @media (max-width: 768px) {
     .environmental-impact-layout {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .carbon-emissions-panel,
+    .environmental-impact-panel,
+    .impact-visualization {
+        padding: 1rem;
+        min-height: 350px;
     }
 
     .emissions-summary {
         grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 
     .impact-categories {
         grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 
     .factors-grid {
@@ -7895,6 +7930,16 @@ body::after {
 
     .viz-controls {
         flex-wrap: wrap;
+    }
+
+    .emission-metric {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .impact-category {
+        padding: 0.5rem;
+        gap: 0.5rem;
     }
 }
 

@@ -3478,6 +3478,7 @@ body::after {
     gap: 1.5rem;
     font-size: 0.85rem;
     white-space: nowrap;
+    margin-left: auto;
 }
 
 .status-indicator {

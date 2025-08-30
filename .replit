@@ -24,6 +24,15 @@ args = "python ml_api.py"
 task = "shell.exec"
 args = "python -m http.server 5000"
 
+[[workflows.workflow]]
+name = "Install Dependencies"
+author = 47050430
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install flask flask-cors numpy"
+
 [[ports]]
 localPort = 5000
 externalPort = 80

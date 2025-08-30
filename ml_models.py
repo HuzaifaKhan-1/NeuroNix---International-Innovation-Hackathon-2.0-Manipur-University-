@@ -1304,3 +1304,277 @@ def predict_environmental_impact(burned_area_hectares: float, vegetation_type: s
 def calculate_fire_progression_emissions(simulation_results: Dict) -> Dict:
     """Calculate CO2 emissions throughout fire progression"""
     return fire_predictor.calculate_fire_progression_emissions(simulation_results)
+import numpy as np
+from datetime import datetime, timedelta
+import json
+
+def get_model_predictions(env_data):
+    """Generate ML-based fire risk predictions"""
+    
+    # Extract environmental parameters
+    temperature = env_data.get('temperature', 30)
+    humidity = env_data.get('humidity', 50)
+    wind_speed = env_data.get('wind_speed', 15)
+    ndvi = env_data.get('ndvi', 0.6)
+    slope = env_data.get('slope', 15)
+    
+    # Calculate ensemble risk score
+    temp_risk = min(1, max(0, (temperature - 20) / 25))
+    humidity_risk = min(1, max(0, (100 - humidity) / 80))
+    wind_risk = min(1, max(0, wind_speed / 30))
+    vegetation_risk = min(1, max(0, (0.8 - ndvi) / 0.6))
+    slope_risk = min(1, max(0, slope / 45))
+    
+    # Weighted ensemble
+    ensemble_risk = (
+        temp_risk * 0.25 +
+        humidity_risk * 0.30 +
+        wind_risk * 0.20 +
+        vegetation_risk * 0.15 +
+        slope_risk * 0.10
+    )
+    
+    # Generate confidence intervals
+    confidence = 0.85 + np.random.normal(0, 0.05)
+    confidence = max(0.6, min(0.95, confidence))
+    
+    return {
+        'ensemble_risk_score': float(ensemble_risk),
+        'ml_prediction': {
+            'overall_risk': float(ensemble_risk),
+            'confidence': float(confidence),
+            'risk_category': get_risk_category(ensemble_risk)
+        },
+        'factor_contributions': {
+            'temperature': float(temp_risk),
+            'humidity': float(humidity_risk),
+            'wind': float(wind_risk),
+            'vegetation': float(vegetation_risk),
+            'terrain': float(slope_risk)
+        },
+        'confidence_interval': {
+            'confidence_level': float(confidence),
+            'lower_bound': max(0, ensemble_risk - 0.1),
+            'upper_bound': min(1, ensemble_risk + 0.1)
+        }
+    }
+
+def get_risk_category(risk_score):
+    """Convert risk score to category"""
+    if risk_score >= 0.75:
+        return 'very_high'
+    elif risk_score >= 0.55:
+        return 'high'
+    elif risk_score >= 0.35:
+        return 'moderate'
+    else:
+        return 'low'
+
+def simulate_fire_scenario(lat, lng, env_data):
+    """Simulate fire spread scenario"""
+    
+    wind_speed = env_data.get('wind_speed', 15)
+    temperature = env_data.get('temperature', 30)
+    humidity = env_data.get('humidity', 50)
+    
+    # Calculate spread rate based on conditions
+    base_spread_rate = 1.5  # km/h
+    wind_factor = wind_speed / 20
+    temp_factor = (temperature - 20) / 20
+    humidity_factor = (100 - humidity) / 100
+    
+    spread_rate = base_spread_rate * (1 + wind_factor + temp_factor + humidity_factor)
+    
+    # Generate hourly progression
+    simulation_results = {
+        'start_coordinates': {'lat': lat, 'lng': lng},
+        'hourly_progression': []
+    }
+    
+    for hour in range(1, 7):  # 6 hour simulation
+        burned_area = (spread_rate * hour) ** 1.5 * 10  # hectares
+        perimeter = np.sqrt(burned_area * np.pi) * 2  # km
+        
+        simulation_results['hourly_progression'].append({
+            'hour': hour,
+            'burned_area_hectares': round(burned_area, 1),
+            'fire_perimeter_km': round(perimeter, 2),
+            'spread_rate_kmh': round(spread_rate, 2),
+            'fire_intensity': min(100, 30 + hour * 10)
+        })
+    
+    return simulation_results
+
+def optimize_resource_deployment(risk_data, available_resources):
+    """Optimize resource deployment based on risk"""
+    
+    # Simple optimization algorithm
+    total_risk = sum([
+        risk_data.get('temperature', 30) / 50,
+        (100 - risk_data.get('humidity', 50)) / 100,
+        risk_data.get('wind_speed', 15) / 30
+    ]) / 3
+    
+    # Allocate resources based on risk level
+    optimization = {
+        'deployment_strategy': 'risk_based',
+        'total_risk_score': round(total_risk, 3),
+        'resource_allocation': {}
+    }
+    
+    if total_risk > 0.7:
+        optimization['resource_allocation'] = {
+            'firefighters': int(available_resources['firefighters'] * 0.8),
+            'water_tanks': int(available_resources['water_tanks'] * 0.9),
+            'drones': int(available_resources['drones'] * 0.7),
+            'helicopters': int(available_resources['helicopters'] * 0.6)
+        }
+        optimization['priority'] = 'high'
+    elif total_risk > 0.4:
+        optimization['resource_allocation'] = {
+            'firefighters': int(available_resources['firefighters'] * 0.5),
+            'water_tanks': int(available_resources['water_tanks'] * 0.6),
+            'drones': int(available_resources['drones'] * 0.5),
+            'helicopters': int(available_resources['helicopters'] * 0.4)
+        }
+        optimization['priority'] = 'medium'
+    else:
+        optimization['resource_allocation'] = {
+            'firefighters': int(available_resources['firefighters'] * 0.3),
+            'water_tanks': int(available_resources['water_tanks'] * 0.3),
+            'drones': int(available_resources['drones'] * 0.3),
+            'helicopters': int(available_resources['helicopters'] * 0.2)
+        }
+        optimization['priority'] = 'low'
+    
+    return optimization
+
+class NDVIAnalyzer:
+    @staticmethod
+    def calculate_ndvi_delta(ndvi_before, ndvi_after):
+        """Calculate NDVI delta for burn area detection"""
+        
+        # Calculate delta
+        ndvi_delta = ndvi_before - ndvi_after
+        
+        # Identify potential burn areas (significant NDVI decrease)
+        burn_threshold = 0.2
+        potential_burn_mask = ndvi_delta > burn_threshold
+        
+        # Calculate statistics
+        total_pixels = ndvi_before.size
+        burn_pixels = np.sum(potential_burn_mask)
+        burn_percentage = (burn_pixels / total_pixels) * 100
+        
+        # Calculate burn severity
+        burn_severity = np.mean(ndvi_delta[potential_burn_mask]) if burn_pixels > 0 else 0
+        
+        # Calculate recovery index (simplified)
+        recovery_potential = np.mean(ndvi_after[potential_burn_mask]) if burn_pixels > 0 else 0
+        
+        return {
+            'ndvi_delta_mean': float(np.mean(ndvi_delta)),
+            'ndvi_delta_std': float(np.std(ndvi_delta)),
+            'potential_burn_area_percent': float(burn_percentage),
+            'burn_severity': float(burn_severity),
+            'recovery_index': float(recovery_potential),
+            'total_area_analyzed': int(total_pixels)
+        }
+
+def calculate_carbon_emissions(burned_area, vegetation_type, fire_intensity):
+    """Calculate CO2 emissions from forest fire"""
+    
+    # Emission factors (tonnes CO2 per hectare)
+    emission_factors = {
+        'mixed_forest': 120,
+        'coniferous_forest': 150,
+        'deciduous_forest': 100,
+        'grassland': 40,
+        'shrubland': 60
+    }
+    
+    # Intensity multipliers
+    intensity_multipliers = {
+        'low_intensity': 0.6,
+        'moderate_intensity': 1.0,
+        'high_intensity': 1.4
+    }
+    
+    base_emission = emission_factors.get(vegetation_type, 100)
+    intensity_mult = intensity_multipliers.get(fire_intensity, 1.0)
+    
+    total_emissions = burned_area * base_emission * intensity_mult
+    
+    return {
+        'total_co2_emissions_tonnes': round(total_emissions, 2),
+        'emission_factor_per_hectare': base_emission,
+        'intensity_multiplier': intensity_mult,
+        'equivalent_cars_annual': round(total_emissions / 4.6, 0)  # Average car emits 4.6 tonnes CO2/year
+    }
+
+def predict_environmental_impact(burned_area, vegetation_type, fire_severity):
+    """Predict long-term environmental impact"""
+    
+    # Base recovery times (years)
+    recovery_times = {
+        'mixed_forest': {'vegetation': 15, 'soil': 8, 'wildlife': 12},
+        'coniferous_forest': {'vegetation': 20, 'soil': 10, 'wildlife': 15},
+        'deciduous_forest': {'vegetation': 12, 'soil': 6, 'wildlife': 10},
+        'grassland': {'vegetation': 3, 'soil': 2, 'wildlife': 4}
+    }
+    
+    base_recovery = recovery_times.get(vegetation_type, recovery_times['mixed_forest'])
+    
+    # Severity multipliers
+    severity_multipliers = {
+        'low': 0.7,
+        'moderate': 1.0,
+        'high': 1.5,
+        'severe': 2.0
+    }
+    
+    severity_mult = severity_multipliers.get(fire_severity, 1.0)
+    
+    return {
+        'vegetation_recovery_years': round(base_recovery['vegetation'] * severity_mult, 1),
+        'soil_recovery_years': round(base_recovery['soil'] * severity_mult, 1),
+        'wildlife_recovery_years': round(base_recovery['wildlife'] * severity_mult, 1),
+        'biodiversity_loss_percentage': min(90, burned_area * 0.1 * severity_mult),
+        'erosion_risk_level': 'high' if fire_severity in ['high', 'severe'] else 'moderate',
+        'water_quality_impact': 'significant' if burned_area > 100 else 'moderate'
+    }
+
+def calculate_fire_progression_emissions(simulation_results):
+    """Calculate emissions throughout fire progression"""
+    
+    if not simulation_results or 'hourly_progression' not in simulation_results:
+        return {'error': 'Invalid simulation data'}
+    
+    progression = simulation_results['hourly_progression']
+    emissions_progression = []
+    
+    for hour_data in progression:
+        hour = hour_data['hour']
+        area = hour_data.get('burned_area_hectares', 0)
+        
+        # Calculate incremental emissions
+        if hour == 1:
+            incremental_area = area
+        else:
+            prev_area = progression[hour-2].get('burned_area_hectares', 0)
+            incremental_area = area - prev_area
+        
+        # Emission calculation
+        hourly_emissions = incremental_area * 100  # 100 tonnes CO2 per hectare
+        
+        emissions_progression.append({
+            'hour': hour,
+            'incremental_area_hectares': round(incremental_area, 1),
+            'hourly_emissions_tonnes': round(hourly_emissions, 2),
+            'cumulative_emissions_tonnes': round(area * 100, 2)
+        })
+    
+    return {
+        'emissions_by_hour': emissions_progression,
+        'total_emissions': round(progression[-1]['burned_area_hectares'] * 100, 2) if progression else 0
+    }

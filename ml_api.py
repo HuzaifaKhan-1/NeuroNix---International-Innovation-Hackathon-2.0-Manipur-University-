@@ -1625,6 +1625,155 @@ def calculate_habitat_quality_score(burned_area, vegetation_type):
     
     return min(100, base_score + area_bonus)
 
+@app.route('/api/ml/location-risk', methods=['POST'])
+def get_location_risk():
+    """Get fire risk data for a specific location"""
+    try:
+        data = request.get_json()
+        
+        location_name = data.get('location_name', '')
+        latitude = data.get('latitude', 30.0)
+        longitude = data.get('longitude', 79.0)
+        
+        # Generate location-specific environmental data
+        risk_data = generate_location_risk_data(location_name, latitude, longitude)
+        
+        return jsonify({
+            'success': True,
+            'location_name': location_name,
+            'coordinates': {'lat': latitude, 'lng': longitude},
+            'risk_data': risk_data,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+def generate_location_risk_data(location_name, lat, lng):
+    """Generate realistic risk data based on location characteristics"""
+    
+    # Define climate patterns for different regions of India
+    regional_climate = get_regional_climate_data(lat, lng)
+    
+    # Generate center location data
+    center_data = {
+        'temperature': regional_climate['base_temp'] + np.random.normal(0, 3),
+        'humidity': max(20, min(80, regional_climate['base_humidity'] + np.random.normal(0, 8))),
+        'windSpeed': max(5, regional_climate['base_wind'] + np.random.normal(0, 4)),
+        'riskLevel': ''
+    }
+    
+    # Calculate risk level for center
+    center_data['riskLevel'] = calculate_location_risk_level(
+        center_data['temperature'], 
+        center_data['humidity'], 
+        center_data['windSpeed']
+    )
+    
+    # Generate surrounding areas data
+    surrounding_areas = []
+    directions = [
+        {'name': 'North', 'lat_offset': 0.05, 'lng_offset': 0},
+        {'name': 'South', 'lat_offset': -0.05, 'lng_offset': 0},
+        {'name': 'East', 'lat_offset': 0, 'lng_offset': 0.05},
+        {'name': 'West', 'lat_offset': 0, 'lng_offset': -0.05}
+    ]
+    
+    for direction in directions:
+        area_climate = get_regional_climate_data(
+            lat + direction['lat_offset'], 
+            lng + direction['lng_offset']
+        )
+        
+        area_data = {
+            'name': f"{location_name} {direction['name']}",
+            'temperature': area_climate['base_temp'] + np.random.normal(0, 2),
+            'humidity': max(25, min(75, area_climate['base_humidity'] + np.random.normal(0, 6))),
+            'windSpeed': max(5, area_climate['base_wind'] + np.random.normal(0, 3)),
+            'offset': {
+                'lat': direction['lat_offset'],
+                'lng': direction['lng_offset']
+            }
+        }
+        
+        surrounding_areas.append(area_data)
+    
+    return {
+        'center': center_data,
+        'surrounding': surrounding_areas
+    }
+
+def get_regional_climate_data(lat, lng):
+    """Get climate characteristics based on coordinates"""
+    
+    # Define different climate zones in India
+    if 32 <= lat <= 37 and 74 <= lng <= 80:  # Himachal Pradesh, Kashmir
+        return {
+            'base_temp': 18 + (lat - 32) * 2,
+            'base_humidity': 45 + np.random.normal(0, 5),
+            'base_wind': 12 + np.random.normal(0, 3),
+            'climate_type': 'alpine'
+        }
+    elif 28 <= lat <= 32 and 77 <= lng <= 81:  # Uttarakhand, parts of UP
+        return {
+            'base_temp': 25 + (32 - lat) * 1.5,
+            'base_humidity': 50 + np.random.normal(0, 8),
+            'base_wind': 15 + np.random.normal(0, 4),
+            'climate_type': 'temperate_himalayan'
+        }
+    elif 20 <= lat <= 28 and 68 <= lng <= 78:  # Rajasthan, Gujarat
+        return {
+            'base_temp': 35 + np.random.normal(0, 5),
+            'base_humidity': 35 + np.random.normal(0, 6),
+            'base_wind': 18 + np.random.normal(0, 5),
+            'climate_type': 'arid'
+        }
+    elif 8 <= lat <= 20 and 72 <= lng <= 88:  # Southern states
+        return {
+            'base_temp': 30 + np.random.normal(0, 4),
+            'base_humidity': 65 + np.random.normal(0, 10),
+            'base_wind': 12 + np.random.normal(0, 3),
+            'climate_type': 'tropical'
+        }
+    elif 20 <= lat <= 28 and 78 <= lng <= 88:  # Eastern states
+        return {
+            'base_temp': 28 + np.random.normal(0, 3),
+            'base_humidity': 70 + np.random.normal(0, 8),
+            'base_wind': 10 + np.random.normal(0, 3),
+            'climate_type': 'subtropical'
+        }
+    else:  # Default for other areas
+        return {
+            'base_temp': 28 + np.random.normal(0, 4),
+            'base_humidity': 55 + np.random.normal(0, 10),
+            'base_wind': 14 + np.random.normal(0, 4),
+            'climate_type': 'temperate'
+        }
+
+def calculate_location_risk_level(temperature, humidity, wind_speed):
+    """Calculate fire risk level based on environmental factors"""
+    
+    # Normalize factors (0-1 scale)
+    temp_factor = min(1, max(0, (temperature - 15) / 30))  # 15-45°C range
+    humidity_factor = min(1, max(0, (80 - humidity) / 60))  # Lower humidity = higher risk
+    wind_factor = min(1, max(0, wind_speed / 30))  # 0-30 km/h range
+    
+    # Calculate weighted risk score
+    risk_score = (temp_factor * 0.4 + humidity_factor * 0.4 + wind_factor * 0.2)
+    
+    # Convert to risk categories
+    if risk_score >= 0.75:
+        return 'very-high'
+    elif risk_score >= 0.55:
+        return 'high'
+    elif risk_score >= 0.35:
+        return 'moderate'
+    else:
+        return 'low'
+
 @app.route('/api/ml/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
@@ -1636,6 +1785,7 @@ def health_check():
         'firevision_3d': True,
         'firesense_explainability': True,
         'recovery_assistance': True,
+        'location_risk_service': True,
         'timestamp': datetime.now().isoformat()
     })
 

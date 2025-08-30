@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -307,74 +306,24 @@
             <div class="impact-visualization">
                 <div class="panel-header">
                     <h3>Impact Visualization</h3>
-                </div>
-                <div class="impact-chart-container">
-                    <canvas id="environmentalImpactChart"></canvas>
-                </div>
-                
-                <!-- Restoration Progress Chart -->
-                <div class="restoration-progress-section">
-                    <h4>Projected Restoration Progress</h4>
-                    <div class="progress-chart-container">
-                        <canvas id="restorationProgressChart"></canvas>
+                    <div class="viz-controls">
+                        <button class="viz-btn active" data-viz="impact-map">Map View</button>
+                        <button class="viz-btn" data-viz="damage-chart">Damage</button>
+                        <button class="viz-btn" data-viz="recovery-timeline">Timeline</button>
                     </div>
                 </div>
-                
-                <!-- Restoration Strategies with Progress -->
-                <div class="restoration-options">
-                    <h4>Restoration Strategies</h4>
-                    <div class="strategy-grid">
-                        <div class="strategy-item-enhanced">
-                            <div class="strategy-header">
-                                <i class="fas fa-seedling"></i>
-                                <span class="strategy-name">Natural Regeneration</span>
-                            </div>
-                            <div class="strategy-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 25%"></div>
-                                </div>
-                                <span class="progress-text">25% Complete</span>
-                            </div>
-                            <div class="strategy-timeline">Timeline: 3-5 years</div>
+                <div class="visualization-content">
+                    <div class="impact-map-container">
+                        <div id="impact-map" style="height: 100%; border-radius: 8px;"></div>
+                    </div>
+                    <div class="key-statistics">
+                        <div class="stat-item">
+                            <span class="stat-label">Affected Area</span>
+                            <span class="stat-value">2,340 hectares</span>
                         </div>
-                        <div class="strategy-item-enhanced">
-                            <div class="strategy-header">
-                                <i class="fas fa-tree"></i>
-                                <span class="strategy-name">Active Reforestation</span>
-                            </div>
-                            <div class="strategy-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 15%"></div>
-                                </div>
-                                <span class="progress-text">15% Complete</span>
-                            </div>
-                            <div class="strategy-timeline">Timeline: 2-3 years</div>
-                        </div>
-                        <div class="strategy-item-enhanced">
-                            <div class="strategy-header">
-                                <i class="fas fa-leaf"></i>
-                                <span class="strategy-name">Soil Stabilization</span>
-                            </div>
-                            <div class="strategy-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 70%"></div>
-                                </div>
-                                <span class="progress-text">70% Complete</span>
-                            </div>
-                            <div class="strategy-timeline">Timeline: 6 months</div>
-                        </div>
-                        <div class="strategy-item-enhanced">
-                            <div class="strategy-header">
-                                <i class="fas fa-paw"></i>
-                                <span class="strategy-name">Wildlife Corridor</span>
-                            </div>
-                            <div class="strategy-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 35%"></div>
-                                </div>
-                                <span class="progress-text">35% Complete</span>
-                            </div>
-                            <div class="strategy-timeline">Timeline: 1-2 years</div>
+                        <div class="stat-item">
+                            <span class="stat-label">Recovery Time</span>
+                            <span class="stat-value">8-12 years</span>
                         </div>
                     </div>
                 </div>

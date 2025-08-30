@@ -8836,6 +8836,8 @@ body::after {
     color: #FF4500;
     font-size: 1.1rem;
     transition: all 0.3s ease;
+    z-index: 10;
+    pointer-events: none;
 }
 
 .search-container:focus-within .search-icon {

@@ -858,6 +858,8 @@ function initializeCharts() {
         initializeFireSpreadChart();
         initializeGaugeCharts();
         initializeAlertStatsChart();
+        initializeEnvironmentalImpactChart();
+        initializeRestorationProgressChart();
 
         console.log('Charts initialized successfully');
     } catch (error) {
@@ -1029,6 +1031,134 @@ function initializeFireSpreadChart() {
         window.chartInstances = {};
     }
     window.chartInstances.fireSpread = fireSpreadChart;
+}
+
+function initializeEnvironmentalImpactChart() {
+    const impactCtx = document.getElementById('environmentalImpactChart');
+    if (!impactCtx) return;
+
+    new Chart(impactCtx.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Forest Cover Loss', 'Wildlife Habitat Impact', 'Soil Degradation', 'Water Quality Impact', 'Air Quality Impact'],
+            datasets: [{
+                data: [35, 25, 20, 12, 8],
+                backgroundColor: ['#EF4444', '#F59E0B', '#8B5CF6', '#3B82F6', '#10B981'],
+                borderWidth: 2,
+                borderColor: 'rgba(255, 255, 255, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#ffffff',
+                        padding: 15,
+                        usePointStyle: true,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((context.parsed / total) * 100).toFixed(1);
+                            return context.label + ': ' + percentage + '%';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initializeRestorationProgressChart() {
+    const restorationCtx = document.getElementById('restorationProgressChart');
+    if (!restorationCtx) return;
+
+    new Chart(restorationCtx.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10'],
+            datasets: [{
+                label: 'Forest Recovery Progress',
+                data: [5, 12, 22, 35, 48, 62, 75, 84, 92, 100],
+                borderColor: '#10B981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#10B981',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ffffff',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return 'Recovery: ' + context.parsed.y + '% Complete';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#ffffff',
+                        font: {
+                            size: 11
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                y: {
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        color: '#ffffff',
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
 }
 
 function initializeGaugeCharts() {

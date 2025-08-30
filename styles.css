@@ -8791,8 +8791,8 @@ body::after {
 /* Professional Search Bar */
 .search-container {
     position: relative;
-    max-width: 450px;
-    min-width: 300px;
+    max-width: 600px;
+    min-width: 400px;
 }
 
 .search-input {

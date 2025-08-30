@@ -3404,6 +3404,7 @@ body::after {
     justify-content: space-between;
     align-items: center;
     min-height: 80px;
+    width: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -3468,7 +3469,9 @@ body::after {
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 3rem;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2rem;
 }
 
 .header-status {
@@ -3478,7 +3481,7 @@ body::after {
     gap: 1.5rem;
     font-size: 0.85rem;
     white-space: nowrap;
-    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .status-indicator {
@@ -8794,6 +8797,7 @@ body::after {
     position: relative;
     max-width: 600px;
     min-width: 400px;
+    flex-shrink: 0;
 }
 
 .search-input {

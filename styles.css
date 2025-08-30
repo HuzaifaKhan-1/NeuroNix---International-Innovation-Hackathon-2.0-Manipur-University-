@@ -4603,12 +4603,13 @@ body::after {
 .region-card {
     background: rgba(30, 41, 59, 0.8);
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1.5rem 1.25rem;
     border: 1px solid transparent;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     border-left: 4px solid;
+    min-height: 180px;
 }
 
 .region-card.very-high-risk {
@@ -4636,23 +4637,33 @@ body::after {
 .region-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 1rem;
+    padding-top: 0.5rem;
+    min-height: 2.5rem;
 }
 
 .region-name {
     font-weight: 700;
     color: #F8FAFC;
     font-size: 1rem;
+    line-height: 1.2;
+    flex: 1;
+    margin-right: 0.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .risk-badge {
-    padding: 0.2rem 0.6rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 8px;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1;
 }
 
 .risk-badge.very-high {

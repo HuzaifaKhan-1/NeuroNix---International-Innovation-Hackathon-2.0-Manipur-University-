@@ -239,74 +239,64 @@
                     </div>
                 </div>
 
-                <!-- Current Conditions Overview -->
+                <!-- Live Activity Feed -->
                 <div class="conditions-overview">
                     <div class="section-title">
-                        <h3>Current Environmental Conditions</h3>
+                        <h3>Live Activity Feed</h3>
+                        <div class="live-indicator">
+                            <span class="status-dot active"></span>
+                            <span>Live Updates</span>
+                        </div>
                     </div>
                     <div class="conditions-grid">
-                        <div class="condition-card temperature">
-                            <div class="condition-header">
-                                <div class="condition-icon">
-                                    <i class="fas fa-thermometer-half"></i>
-                                </div>
-                                <div class="condition-info">
-                                    <span class="condition-label">Temperature</span>
-                                    <span class="condition-location">Avg. Statewide</span>
-                                </div>
+                        <div class="condition-card satellite new">
+                            <div class="condition-icon">
+                                <i class="fas fa-satellite-dish"></i>
                             </div>
-                            <div class="condition-value">32°C</div>
-                            <div class="condition-trend up">
-                                <i class="fas fa-arrow-up"></i>
-                                +2.5° from yesterday
+                            <div class="condition-info">
+                                <div class="condition-label">Satellite Data Updated</div>
+                                <div class="condition-location">New MODIS imagery processed for Nainital region</div>
+                                <div class="condition-value">2 minutes ago</div>
                             </div>
                         </div>
-                        <div class="condition-card humidity">
-                            <div class="condition-header">
-                                <div class="condition-icon">
-                                    <i class="fas fa-tint"></i>
-                                </div>
-                                <div class="condition-info">
-                                    <span class="condition-label">Humidity</span>
-                                    <span class="condition-location">Avg. Statewide</span>
-                                </div>
-                            </div>
-                            <div class="condition-value">45%</div>
-                            <div class="condition-trend down">
-                                <i class="fas fa-arrow-down"></i>
-                                -8% from yesterday
-                            </div>
-                        </div>
-                        <div class="condition-card wind">
-                            <div class="condition-header">
-                                <div class="condition-icon">
-                                    <i class="fas fa-wind"></i>
-                                </div>
-                                <div class="condition-info">
-                                    <span class="condition-label">Wind Speed</span>
-                                    <span class="condition-location">Avg. Statewide</span>
-                                </div>
-                            </div>
-                            <div class="condition-value">15 km/h</div>
-                            <div class="condition-trend up">
-                                <i class="fas fa-arrow-up"></i>
-                                +3 km/h from yesterday
-                            </div>
-                        </div>
-                        <div class="condition-card risk">
-                            <div class="condition-header">
-                                <div class="condition-icon">
-                                    <i class="fas fa-fire"></i>
-                                </div>
-                                <div class="condition-info">
-                                    <span class="condition-label">Fire Danger</span>
-                                    <span class="condition-location">Overall Rating</span>
-                                </div>
-                            </div>
-                            <div class="condition-value">High</div>
-                            <div class="condition-trend critical">
+                        <div class="condition-card risk-update">
+                            <div class="condition-icon">
                                 <i class="fas fa-exclamation-triangle"></i>
-                                Elevated conditions
+                            </div>
+                            <div class="condition-info">
+                                <div class="condition-label">Risk Level Updated</div>
+                                <div class="condition-location">Almora District elevated to High Risk status</div>
+                                <div class="condition-value">8 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="condition-card weather">
+                            <div class="condition-icon">
+                                <i class="fas fa-cloud-sun"></i>
+                            </div>
+                            <div class="condition-info">
+                                <div class="condition-label">Weather Data Sync</div>
+                                <div class="condition-location">ERA5 meteorological data synchronized</div>
+                                <div class="condition-value">15 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="condition-card system">
+                            <div class="condition-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="condition-info">
+                                <div class="condition-label">System Health Check</div>
+                                <div class="condition-location">All monitoring systems operational</div>
+                                <div class="condition-value">22 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="condition-card satellite">
+                            <div class="condition-icon">
+                                <i class="fas fa-satellite"></i>
+                            </div>
+                            <div class="condition-info">
+                                <div class="condition-label">LANDSAT Analysis Complete</div>
+                                <div class="condition-location">Vegetation health index updated for Dehradun</div>
+                                <div class="condition-value">35 minutes ago</div>
                             </div>
                         </div>
                     </div>

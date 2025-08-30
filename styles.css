@@ -4873,7 +4873,59 @@ body::after {
     font-weight: 500;
 }
 
-/* Search functionality styles */
+/* Enhanced Search functionality styles */
+.search-container {
+    position: relative;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 107, 53, 0.1);
+    transform: translateX(4px);
+}
+
+.suggestion-item i {
+    color: #FF6B35;
+    font-size: 0.9rem;
+    width: 16px;
+    text-align: center;
+}
+
+.suggestion-item span {
+    color: #F8FAFC;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .search-result-marker {
     position: relative;
     color: #ff6b35;
@@ -4882,16 +4934,32 @@ body::after {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+.search-marker-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-marker-container i {
+    color: #FF6B35;
+    font-size: 1.5rem;
+    z-index: 2;
+    position: relative;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
 .search-pulse {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 40px;
     height: 40px;
-    background: rgba(255, 107, 53, 0.3);
+    background: rgba(255, 107, 53, 0.4);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: searchPulse 2s infinite;
+    z-index: 1;
 }
 
 @keyframes searchPulse {
@@ -4900,19 +4968,21 @@ body::after {
         opacity: 1;
     }
     100% {
-        transform: translate(-50%, -50%) scale(2);
+        transform: translate(-50%, -50%) scale(2.5);
         opacity: 0;
     }
 }
 
 .search-popup {
     text-align: center;
+    min-width: 150px;
 }
 
 .search-popup h4 {
     margin: 0 0 0.5rem 0;
     color: #1e293b;
     font-size: 1rem;
+    font-weight: 600;
 }
 
 .search-popup p {
@@ -4922,8 +4992,53 @@ body::after {
 }
 
 /* Map highlight animation for search results */
-.map-container.search-highlight {
-    animation: mapSearchHighlight 2s ease-in-out;
+.map-container.search-highlight,
+.canvas-container.search-highlight {
+    animation: mapSearchHighlight 3s ease-in-out;
+    border: 2px solid rgba(255, 107, 53, 0.6);
+}
+
+@keyframes mapSearchHighlight {
+    0% {
+        box-shadow: 0 0 0 rgba(255, 107, 53, 0.8);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(255, 107, 53, 0.8);
+        transform: scale(1);
+    }
+}
+
+/* Processing toast animation */
+.toast.processing {
+    background: linear-gradient(135deg, #F59E0B, #F97316);
+}
+
+.toast.processing::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, #FCD34D, #F59E0B);
+    animation: processingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes processingPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1.2);
+    }
+}
 }
 
 @keyframes mapSearchHighlight {

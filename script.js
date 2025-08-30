@@ -1161,92 +1161,452 @@ function updateMapRiskColors(type) {
     });
 }
 
-// Enhanced Search Functionality
+// Enhanced Search Functionality with expanded location database
 function initializeMapSearch() {
     const searchInput = document.querySelector('.search-input');
 
-    const searchMap = (query, map) => {
-        const locations = {
-            'nainital': { lat: 29.3806, lng: 79.4422 },
-            'almora': { lat: 29.6500, lng: 79.6667 },
-            'dehradun': { lat: 30.3165, lng: 78.0322 },
-            'haridwar': { lat: 29.9457, lng: 78.1642 },
-            'rishikesh': { lat: 30.0869, lng: 78.2676 },
-            'uttarakhand': { lat: 30.0668, lng: 79.0193 },
-            'jim corbett': { lat: 29.5308, lng: 78.9514 },
-            'corbett': { lat: 29.5308, lng: 78.9514 },
-            'valley of flowers': { lat: 30.7268, lng: 79.6045 },
-            'chamoli': { lat: 30.4000, lng: 79.3200 },
-            'pithoragarh': { lat: 29.5833, lng: 80.2167 },
-            'tehri': { lat: 30.3900, lng: 78.4800 },
-            'pauri': { lat: 30.1500, lng: 78.7800 },
-            'rudraprayag': { lat: 30.2800, lng: 78.9800 },
-            'bageshwar': { lat: 29.8400, lng: 79.7700 },
-            'champawat': { lat: 29.3400, lng: 80.0900 },
-            'uttarkashi': { lat: 30.7300, lng: 78.4500 },
-            'udham singh nagar': { lat: 28.9750, lng: 79.4000 }
-        };
+    // Comprehensive location database including all Indian states and major districts
+    const locations = {
+        // Uttarakhand districts and places
+        'nainital': { lat: 29.3806, lng: 79.4422, zoom: 12 },
+        'almora': { lat: 29.6500, lng: 79.6667, zoom: 12 },
+        'dehradun': { lat: 30.3165, lng: 78.0322, zoom: 12 },
+        'haridwar': { lat: 29.9457, lng: 78.1642, zoom: 12 },
+        'rishikesh': { lat: 30.0869, lng: 78.2676, zoom: 12 },
+        'uttarakhand': { lat: 30.0668, lng: 79.0193, zoom: 8 },
+        'jim corbett': { lat: 29.5308, lng: 78.9514, zoom: 12 },
+        'corbett': { lat: 29.5308, lng: 78.9514, zoom: 12 },
+        'valley of flowers': { lat: 30.7268, lng: 79.6045, zoom: 12 },
+        'chamoli': { lat: 30.4000, lng: 79.3200, zoom: 12 },
+        'pithoragarh': { lat: 29.5833, lng: 80.2167, zoom: 12 },
+        'tehri': { lat: 30.3900, lng: 78.4800, zoom: 12 },
+        'pauri': { lat: 30.1500, lng: 78.7800, zoom: 12 },
+        'rudraprayag': { lat: 30.2800, lng: 78.9800, zoom: 12 },
+        'bageshwar': { lat: 29.8400, lng: 79.7700, zoom: 12 },
+        'champawat': { lat: 29.3400, lng: 80.0900, zoom: 12 },
+        'uttarkashi': { lat: 30.7300, lng: 78.4500, zoom: 12 },
+        'udham singh nagar': { lat: 28.9750, lng: 79.4000, zoom: 12 },
+        
+        // Indian States
+        'andhra pradesh': { lat: 15.9129, lng: 79.7400, zoom: 7 },
+        'arunachal pradesh': { lat: 28.2180, lng: 94.7278, zoom: 7 },
+        'assam': { lat: 26.2006, lng: 92.9376, zoom: 7 },
+        'bihar': { lat: 25.0961, lng: 85.3131, zoom: 7 },
+        'chhattisgarh': { lat: 21.2787, lng: 81.8661, zoom: 7 },
+        'goa': { lat: 15.2993, lng: 74.1240, zoom: 10 },
+        'gujarat': { lat: 23.0225, lng: 72.5714, zoom: 7 },
+        'haryana': { lat: 29.0588, lng: 76.0856, zoom: 8 },
+        'himachal pradesh': { lat: 31.1048, lng: 77.1734, zoom: 8 },
+        'jharkhand': { lat: 23.6102, lng: 85.2799, zoom: 7 },
+        'karnataka': { lat: 15.3173, lng: 75.7139, zoom: 7 },
+        'kerala': { lat: 10.8505, lng: 76.2711, zoom: 8 },
+        'madhya pradesh': { lat: 22.9734, lng: 78.6569, zoom: 7 },
+        'maharashtra': { lat: 19.7515, lng: 75.7139, zoom: 7 },
+        'manipur': { lat: 24.6637, lng: 93.9063, zoom: 9 },
+        'meghalaya': { lat: 25.4670, lng: 91.3662, zoom: 9 },
+        'mizoram': { lat: 23.1645, lng: 92.9376, zoom: 9 },
+        'nagaland': { lat: 26.1584, lng: 94.5624, zoom: 9 },
+        'odisha': { lat: 20.9517, lng: 85.0985, zoom: 7 },
+        'punjab': { lat: 31.1471, lng: 75.3412, zoom: 8 },
+        'rajasthan': { lat: 27.0238, lng: 74.2179, zoom: 6 },
+        'sikkim': { lat: 27.5330, lng: 88.5122, zoom: 10 },
+        'tamil nadu': { lat: 11.1271, lng: 78.6569, zoom: 7 },
+        'telangana': { lat: 18.1124, lng: 79.0193, zoom: 8 },
+        'tripura': { lat: 23.9408, lng: 91.9882, zoom: 9 },
+        'uttar pradesh': { lat: 26.8467, lng: 80.9462, zoom: 6 },
+        'west bengal': { lat: 22.9868, lng: 87.8550, zoom: 7 },
+        
+        // Union territories
+        'andaman and nicobar islands': { lat: 11.7401, lng: 92.6586, zoom: 8 },
+        'chandigarh': { lat: 30.7333, lng: 76.7794, zoom: 11 },
+        'dadra and nagar haveli': { lat: 20.1809, lng: 73.0169, zoom: 10 },
+        'daman and diu': { lat: 20.3974, lng: 72.8328, zoom: 10 },
+        'lakshadweep': { lat: 10.5667, lng: 72.6417, zoom: 9 },
+        'new delhi': { lat: 28.7041, lng: 77.1025, zoom: 10 },
+        'delhi': { lat: 28.7041, lng: 77.1025, zoom: 10 },
+        'puducherry': { lat: 11.9416, lng: 79.8083, zoom: 10 },
+        
+        // Major cities
+        'mumbai': { lat: 19.0760, lng: 72.8777, zoom: 10 },
+        'kolkata': { lat: 22.5726, lng: 88.3639, zoom: 10 },
+        'bangalore': { lat: 12.9716, lng: 77.5946, zoom: 10 },
+        'bengaluru': { lat: 12.9716, lng: 77.5946, zoom: 10 },
+        'chennai': { lat: 13.0827, lng: 80.2707, zoom: 10 },
+        'hyderabad': { lat: 17.3850, lng: 78.4867, zoom: 10 },
+        'pune': { lat: 18.5204, lng: 73.8567, zoom: 10 },
+        'ahmedabad': { lat: 23.0225, lng: 72.5714, zoom: 10 },
+        'jaipur': { lat: 26.9124, lng: 75.7873, zoom: 10 },
+        'surat': { lat: 21.1702, lng: 72.8311, zoom: 10 },
+        'lucknow': { lat: 26.8467, lng: 80.9462, zoom: 10 },
+        'kanpur': { lat: 26.4499, lng: 80.3319, zoom: 10 },
+        'nagpur': { lat: 21.1458, lng: 79.0882, zoom: 10 },
+        'indore': { lat: 22.7196, lng: 75.8577, zoom: 10 },
+        'thane': { lat: 19.2183, lng: 72.9781, zoom: 10 },
+        'bhopal': { lat: 23.2599, lng: 77.4126, zoom: 10 },
+        'visakhapatnam': { lat: 17.6868, lng: 83.2185, zoom: 10 },
+        'pimpri-chinchwad': { lat: 18.6298, lng: 73.7997, zoom: 10 },
+        'patna': { lat: 25.5941, lng: 85.1376, zoom: 10 },
+        'vadodara': { lat: 22.3072, lng: 73.1812, zoom: 10 },
+        'ludhiana': { lat: 30.9010, lng: 75.8573, zoom: 10 },
+        'agra': { lat: 27.1767, lng: 78.0081, zoom: 10 },
+        'nashik': { lat: 19.9975, lng: 73.7898, zoom: 10 },
+        'faridabad': { lat: 28.4089, lng: 77.3178, zoom: 10 },
+        'meerut': { lat: 28.9845, lng: 77.7064, zoom: 10 },
+        'rajkot': { lat: 22.3039, lng: 70.8022, zoom: 10 },
+        'kalyan-dombivli': { lat: 19.2350, lng: 73.1300, zoom: 10 },
+        'vasai-virar': { lat: 19.4914, lng: 72.8054, zoom: 10 },
+        'varanasi': { lat: 25.3176, lng: 82.9739, zoom: 10 },
+        'srinagar': { lat: 34.0837, lng: 74.7973, zoom: 10 },
+        'aurangabad': { lat: 19.8762, lng: 75.3433, zoom: 10 },
+        'dhanbad': { lat: 23.7957, lng: 86.4304, zoom: 10 },
+        'amritsar': { lat: 31.6340, lng: 74.8723, zoom: 10 },
+        'navi mumbai': { lat: 19.0330, lng: 73.0297, zoom: 10 },
+        'allahabad': { lat: 25.4358, lng: 81.8463, zoom: 10 },
+        'prayagraj': { lat: 25.4358, lng: 81.8463, zoom: 10 },
+        'howrah': { lat: 22.5958, lng: 88.2636, zoom: 10 },
+        'ranchi': { lat: 23.3441, lng: 85.3096, zoom: 10 },
+        'gwalior': { lat: 26.2183, lng: 78.1828, zoom: 10 },
+        'jabalpur': { lat: 23.1815, lng: 79.9864, zoom: 10 },
+        'coimbatore': { lat: 11.0168, lng: 76.9558, zoom: 10 },
+        'vijayawada': { lat: 16.5062, lng: 80.6480, zoom: 10 },
+        'jodhpur': { lat: 26.2389, lng: 73.0243, zoom: 10 },
+        'madurai': { lat: 9.9252, lng: 78.1198, zoom: 10 },
+        'raipur': { lat: 21.2514, lng: 81.6296, zoom: 10 },
+        'kota': { lat: 25.2138, lng: 75.8648, zoom: 10 },
+        'chandigarh': { lat: 30.7333, lng: 76.7794, zoom: 11 },
+        'guwahati': { lat: 26.1445, lng: 91.7362, zoom: 10 },
+        'solapur': { lat: 17.6599, lng: 75.9064, zoom: 10 },
+        'hubli-dharwad': { lat: 15.3647, lng: 75.1240, zoom: 10 },
+        'bareilly': { lat: 28.3670, lng: 79.4304, zoom: 10 },
+        'moradabad': { lat: 28.8386, lng: 78.7733, zoom: 10 },
+        'mysore': { lat: 12.2958, lng: 76.6394, zoom: 10 },
+        'gurgaon': { lat: 28.4595, lng: 77.0266, zoom: 10 },
+        'gurugram': { lat: 28.4595, lng: 77.0266, zoom: 10 },
+        'aligarh': { lat: 27.8974, lng: 78.0880, zoom: 10 },
+        'jalandhar': { lat: 31.3260, lng: 75.5762, zoom: 10 },
+        'tiruchirappalli': { lat: 10.7905, lng: 78.7047, zoom: 10 },
+        'bhubaneswar': { lat: 20.2961, lng: 85.8245, zoom: 10 },
+        'salem': { lat: 11.6643, lng: 78.1460, zoom: 10 },
+        'warangal': { lat: 17.9689, lng: 79.5941, zoom: 10 }
+    };
 
-        const lowerCaseQuery = query.toLowerCase();
-        if (locations[lowerCaseQuery]) {
-            const { lat, lng } = locations[lowerCaseQuery];
-            map.setView([lat, lng], 12);
-            L.marker([lat, lng]).addTo(map).bindPopup(query.charAt(0).toUpperCase() + query.slice(1)).openPopup();
-            showToast(`Navigated to ${query}`, 'success');
-            return true;
-        } else {
-            showToast(`Location "${query}" not found.`, 'error');
-            return false;
+    // Fuzzy search function for partial matches
+    const fuzzySearch = (query) => {
+        const lowerQuery = query.toLowerCase().trim();
+        
+        // Exact match first
+        if (locations[lowerQuery]) {
+            return { key: lowerQuery, data: locations[lowerQuery] };
         }
+        
+        // Partial match search
+        const matches = Object.keys(locations).filter(key => 
+            key.includes(lowerQuery) || lowerQuery.includes(key.split(' ')[0])
+        );
+        
+        if (matches.length > 0) {
+            // Return the best match (longest common substring)
+            const bestMatch = matches.reduce((best, current) => {
+                const bestScore = getMatchScore(lowerQuery, best);
+                const currentScore = getMatchScore(lowerQuery, current);
+                return currentScore > bestScore ? current : best;
+            });
+            
+            return { key: bestMatch, data: locations[bestMatch] };
+        }
+        
+        return null;
+    };
+
+    const getMatchScore = (query, key) => {
+        let score = 0;
+        if (key.startsWith(query)) score += 100;
+        if (key.includes(query)) score += 50;
+        if (query.includes(key.split(' ')[0])) score += 25;
+        return score;
+    };
+
+    const searchAllMaps = (query, locationData) => {
+        const { lat, lng, zoom } = locationData;
+        let updatedMaps = 0;
+        
+        // List of all possible maps to update
+        const mapsToUpdate = [
+            { map: riskMap, name: 'Risk Map' },
+            { map: simulationMap, name: 'Simulation Map' },
+            { map: deploymentMap, name: 'Deployment Map' },
+            { map: evacuationMap, name: 'Evacuation Map' },
+            { map: explainabilityMap, name: 'Explainability Map' }
+        ];
+        
+        // Update all active maps
+        mapsToUpdate.forEach(({ map, name }) => {
+            if (map && typeof map.setView === 'function') {
+                try {
+                    map.setView([lat, lng], zoom);
+                    
+                    // Add search result marker to each map
+                    const searchMarker = L.marker([lat, lng], {
+                        icon: L.divIcon({
+                            className: 'search-result-marker',
+                            html: `
+                                <div class="search-marker-container">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div class="search-pulse"></div>
+                                </div>
+                            `,
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 30]
+                        })
+                    }).addTo(map);
+                    
+                    // Auto-remove marker after 10 seconds
+                    setTimeout(() => {
+                        if (map.hasLayer(searchMarker)) {
+                            map.removeLayer(searchMarker);
+                        }
+                    }, 10000);
+                    
+                    searchMarker.bindPopup(`
+                        <div class="search-popup">
+                            <h4>${query.charAt(0).toUpperCase() + query.slice(1)}</h4>
+                            <p>Located via ${name}</p>
+                        </div>
+                    `).openPopup();
+                    
+                    updatedMaps++;
+                } catch (error) {
+                    console.warn(`Failed to update ${name}:`, error);
+                }
+            }
+        });
+        
+        return updatedMaps;
     };
 
     const performSearch = (query) => {
-        if (query && riskMap && simulationMap) {
-            const riskSuccess = searchMap(query, riskMap);
-            const simulationSuccess = searchMap(query, simulationMap);
-
-            if (riskSuccess || simulationSuccess) {
+        if (!query) return;
+        
+        // Clean and normalize query
+        const cleanQuery = query.toLowerCase().trim();
+        
+        // Search for location
+        const searchResult = fuzzySearch(cleanQuery);
+        
+        if (searchResult) {
+            const updatedMaps = searchAllMaps(query, searchResult.data);
+            
+            if (updatedMaps > 0) {
+                showToast(`Found "${searchResult.key}" - Updated ${updatedMaps} map(s)`, 'success');
+                
+                // Add visual emphasis to updated maps
                 setTimeout(() => {
-                    const fireRiskSection = document.getElementById('fire-risk');
-                    if (fireRiskSection) {
-                        fireRiskSection.scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                    const mapContainers = document.querySelectorAll('.map-container, .canvas-container');
+                    mapContainers.forEach(container => {
+                        container.style.boxShadow = '0 0 30px rgba(255, 107, 53, 0.8)';
+                        container.style.transform = 'scale(1.02)';
+                        container.style.transition = 'all 0.5s ease';
+                        container.style.border = '2px solid rgba(255, 107, 53, 0.6)';
+                    });
 
-                        const mapContainers = document.querySelectorAll('.map-container');
+                    setTimeout(() => {
                         mapContainers.forEach(container => {
-                            container.style.boxShadow = '0 0 30px rgba(255, 107, 53, 0.8)';
-                            container.style.transform = 'scale(1.01)';
-                            container.style.transition = 'all 0.5s ease';
+                            container.style.boxShadow = '';
+                            container.style.transform = '';
+                            container.style.border = '';
                         });
-
-                        setTimeout(() => {
-                            mapContainers.forEach(container => {
-                                container.style.boxShadow = '';
-                                container.style.transform = '';
-                            });
-                        }, 2000);
-                    }
-                }, 500);
+                    }, 3000);
+                }, 300);
+                
+                // Update 3D visualization if available
+                if (window.fireVision3D && searchResult.data) {
+                    setTimeout(() => {
+                        updateFireVision3DLocation(searchResult.data.lat, searchResult.data.lng);
+                    }, 500);
+                }
+                
+            } else {
+                showToast(`Location found but no maps available to display`, 'warning');
             }
+        } else {
+            // Try online geocoding as fallback
+            performOnlineGeocoding(query);
+        }
 
-            if (searchInput) {
-                searchInput.value = '';
-            }
+        // Clear search input
+        if (searchInput) {
+            searchInput.value = '';
         }
     };
 
+    // Fallback to online geocoding for unknown locations
+    const performOnlineGeocoding = async (query) => {
+        try {
+            showToast(`Searching for "${query}" online...`, 'processing', 2000);
+            
+            // Using Nominatim geocoding service (free, no API key required)
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=1`);
+            const results = await response.json();
+            
+            if (results && results.length > 0) {
+                const result = results[0];
+                const locationData = {
+                    lat: parseFloat(result.lat),
+                    lng: parseFloat(result.lon),
+                    zoom: 10
+                };
+                
+                const updatedMaps = searchAllMaps(query, locationData);
+                
+                if (updatedMaps > 0) {
+                    showToast(`Found "${result.display_name.split(',')[0]}" - Updated ${updatedMaps} map(s)`, 'success');
+                } else {
+                    showToast(`Location found but no maps available`, 'warning');
+                }
+            } else {
+                showToast(`Location "${query}" not found in India`, 'error');
+            }
+        } catch (error) {
+            console.error('Geocoding failed:', error);
+            showToast(`Could not find location "${query}"`, 'error');
+        }
+    };
+
+    // Enhanced event listeners
     if (searchInput) {
+        // Enter key search
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const query = searchInput.value.trim();
-                performSearch(query);
+                if (query.length >= 2) {
+                    performSearch(query);
+                } else {
+                    showToast('Please enter at least 2 characters', 'warning');
+                }
+            }
+        });
+        
+        // Add search suggestions on input
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query.length >= 2) {
+                showSearchSuggestions(query);
+            } else {
+                hideSearchSuggestions();
+            }
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                hideSearchSuggestions();
             }
         });
     }
 }
+
+// Search suggestions functionality
+function showSearchSuggestions(query) {
+    const searchContainer = document.querySelector('.search-container');
+    let suggestionsContainer = document.getElementById('search-suggestions');
+    
+    if (!suggestionsContainer) {
+        suggestionsContainer = document.createElement('div');
+        suggestionsContainer.id = 'search-suggestions';
+        suggestionsContainer.className = 'search-suggestions';
+        searchContainer.appendChild(suggestionsContainer);
+    }
+    
+    // Get location matches
+    const locations = {
+        'nainital': 'Nainital, Uttarakhand',
+        'almora': 'Almora, Uttarakhand', 
+        'dehradun': 'Dehradun, Uttarakhand',
+        'maharashtra': 'Maharashtra State',
+        'gujarat': 'Gujarat State',
+        'rajasthan': 'Rajasthan State',
+        'kerala': 'Kerala State',
+        'karnataka': 'Karnataka State',
+        'tamil nadu': 'Tamil Nadu State',
+        'delhi': 'New Delhi',
+        'mumbai': 'Mumbai, Maharashtra',
+        'bangalore': 'Bangalore, Karnataka',
+        'chennai': 'Chennai, Tamil Nadu',
+        'kolkata': 'Kolkata, West Bengal',
+        'hyderabad': 'Hyderabad, Telangana'
+    };
+    
+    const matches = Object.keys(locations)
+        .filter(key => key.includes(query) || query.includes(key.split(' ')[0]))
+        .slice(0, 5); // Limit to 5 suggestions
+    
+    if (matches.length > 0) {
+        suggestionsContainer.innerHTML = matches.map(match => `
+            <div class="suggestion-item" data-location="${match}">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${locations[match] || match}</span>
+            </div>
+        `).join('');
+        
+        // Add click handlers to suggestions
+        suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const location = item.dataset.location;
+                document.querySelector('.search-input').value = location;
+                performGlobalSearch(location);
+                hideSearchSuggestions();
+            });
+        });
+        
+        suggestionsContainer.style.display = 'block';
+    } else {
+        hideSearchSuggestions();
+    }
+}
+
+function hideSearchSuggestions() {
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    if (suggestionsContainer) {
+        suggestionsContainer.style.display = 'none';
+    }
+}
+
+// Global search function accessible from suggestions
+function performGlobalSearch(query) {
+    // This function is accessible from suggestion clicks
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        searchInput.value = query;
+        // Trigger the search
+        const event = new KeyboardEvent('keypress', { key: 'Enter' });
+        searchInput.dispatchEvent(event);
+    }
+}
+
+// Update FireVision 3D camera position for search results
+function updateFireVision3DLocation(lat, lng) {
+    if (window.fireVision3D && window.fireVision3D.camera) {
+        try {
+            // Convert lat/lng to relative 3D coordinates (simplified)
+            const x = (lng - 79.0193) * 100; // Offset from Uttarakhand center
+            const z = (lat - 30.0668) * 100;
+            
+            // Update camera to look at this location
+            const distance = 50;
+            window.fireVision3D.camera.position.set(x, 30, z + distance);
+            window.fireVision3D.camera.lookAt(x, 0, z);
+            
+            showToast('3D view updated to search location', 'info');
+        } catch (error) {
+            console.warn('Could not update 3D view:', error);
+        }
+    }
+}
+
+// Global variable to track explainability map
+let explainabilityMap = null;
 
 // Start real-time data updates
 function startDataUpdates() {
@@ -1778,7 +2138,7 @@ function initializeExplainabilityMap() {
     if (!mapElement) return;
 
     try {
-        const explainabilityMap = L.map('explainability-map').setView([30.0668, 79.0193], 9);
+        explainabilityMap = L.map('explainability-map').setView([30.0668, 79.0193], 9);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'

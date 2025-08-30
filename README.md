@@ -112,11 +112,4 @@ This project is designed to **predict, simulate, monitor, and assist evacuation*
 
 ---
 
-## 💡 Future Enhancements
-- Integration with **real-time satellite feeds** (NASA FIRMS API).  
-- Mobile App for on-ground fire alerts and evacuation.  
-- Advanced **Reinforcement Learning simulation** for more realistic fire spread.  
-- Multilingual **voice alerts for citizens** in affected areas.  
-
-
 ### 🔥 Team NeuroNix – Building AI for Safer Forests

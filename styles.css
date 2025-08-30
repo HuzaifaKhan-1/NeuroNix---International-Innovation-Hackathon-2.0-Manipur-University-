@@ -3474,6 +3474,7 @@ body::after {
 .header-status {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 1.5rem;
     font-size: 0.85rem;
     white-space: nowrap;

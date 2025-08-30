@@ -4326,28 +4326,35 @@ body::after {
 /* Conditions Overview */
 .conditions-overview {
     background: rgba(20, 40, 20, 0.85);
-    border-radius: 20px;
-    padding: 2rem;
+    border-radius: 24px;
+    padding: 2.5rem;
     backdrop-filter: blur(16px);
     border: 1px solid rgba(45, 80, 45, 0.3);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
     margin-top: 2rem;
 }
 
 .conditions-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 2rem;
+    align-items: stretch;
 }
 
 .condition-card {
-    background: rgba(15, 23, 42, 0.6);
-    border-radius: 16px;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 69, 0, 0.1);
-    transition: all 0.3s ease;
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .condition-card::before {
@@ -4356,81 +4363,284 @@ body::after {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+    transition: all 0.3s ease;
 }
 
-.condition-card.temperature::before { background: linear-gradient(90deg, #EF4444, #F59E0B); }
-.condition-card.humidity::before { background: linear-gradient(90deg, #FF4500, #FF8C00); }
-.condition-card.wind::before { background: linear-gradient(90deg, #10B981, #059669); }
-.condition-card.risk::before { background: linear-gradient(90deg, #F59E0B, #EF4444); }
+.condition-card.temperature::before { 
+    background: linear-gradient(90deg, #EF4444, #F59E0B); 
+}
+.condition-card.humidity::before { 
+    background: linear-gradient(90deg, #3B82F6, #06B6D4); 
+}
+.condition-card.wind::before { 
+    background: linear-gradient(90deg, #10B981, #059669); 
+}
+.condition-card.risk::before { 
+    background: linear-gradient(90deg, #F59E0B, #EF4444); 
+}
 
 .condition-card:hover {
-    background: rgba(255, 69, 0, 0.05);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.condition-card.temperature:hover {
+    box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.condition-card.humidity:hover {
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.condition-card.wind:hover {
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.condition-card.risk:hover {
+    box-shadow: 0 20px 40px rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.3);
 }
 
 .condition-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .condition-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 140, 0, 0.2));
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FF4500;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.condition-card.temperature .condition-icon {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(245, 158, 11, 0.2));
+    color: #EF4444;
+}
+
+.condition-card.humidity .condition-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(6, 182, 212, 0.2));
+    color: #3B82F6;
+}
+
+.condition-card.wind .condition-icon {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.2));
+    color: #10B981;
+}
+
+.condition-card.risk .condition-icon {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(239, 68, 68, 0.2));
+    color: #F59E0B;
+}
+
+.condition-card:hover .condition-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .condition-info {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
+    flex: 1;
 }
 
 .condition-label {
-    font-weight: 600;
+    font-weight: 700;
     color: #F8FAFC;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    letter-spacing: -0.025em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .condition-location {
     color: #94A3B8;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .condition-value {
-    font-size: 2rem;
+    font-size: 2.75rem;
     font-weight: 800;
-    color: #FF4500;
-    margin-bottom: 0.5rem;
+    margin: 1rem 0;
+    letter-spacing: -0.05em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    line-height: 1;
+}
+
+.condition-card.temperature .condition-value {
+    color: #EF4444;
+}
+
+.condition-card.humidity .condition-value {
+    color: #3B82F6;
+}
+
+.condition-card.wind .condition-value {
+    color: #10B981;
+}
+
+.condition-card.risk .condition-value {
+    color: #F59E0B;
 }
 
 .condition-trend {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 500;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    margin-top: auto;
+}
+
+.condition-trend i {
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .condition-trend.up {
     color: #EF4444;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
 .condition-trend.down {
     color: #10B981;
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.2);
 }
 
 .condition-trend.critical {
     color: #F59E0B;
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.2);
+    animation: criticalPulse 2s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+    }
+}
+
+/* Responsive Design for Conditions */
+@media (max-width: 1200px) {
+    .conditions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .condition-card {
+        min-height: 160px;
+    }
+    
+    .condition-value {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .conditions-overview {
+        padding: 2rem;
+    }
+    
+    .conditions-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    
+    .condition-card {
+        padding: 1.75rem;
+        min-height: 140px;
+    }
+    
+    .condition-header {
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .condition-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    
+    .condition-label {
+        font-size: 1rem;
+    }
+    
+    .condition-value {
+        font-size: 2rem;
+        margin: 0.75rem 0;
+    }
+    
+    .condition-trend {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .conditions-overview {
+        padding: 1.5rem;
+    }
+    
+    .condition-card {
+        padding: 1.5rem;
+        min-height: 120px;
+    }
+    
+    .condition-header {
+        margin-bottom: 1rem;
+    }
+    
+    .condition-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+    
+    .condition-label {
+        font-size: 0.95rem;
+    }
+    
+    .condition-location {
+        font-size: 0.8rem;
+    }
+    
+    .condition-value {
+        font-size: 1.75rem;
+        margin: 0.6rem 0;
+    }
+    
+    .condition-trend {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+    }
 }
 
 /* Regional Summary */

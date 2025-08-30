@@ -4991,6 +4991,53 @@ body::after {
     font-size: 0.875rem;
 }
 
+/* Risk Zone Popup Styles */
+.risk-zone-popup {
+    min-width: 200px;
+    text-align: left;
+}
+
+.risk-zone-popup h4 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+}
+
+.risk-zone-popup p {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+}
+
+.zone-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.zone-stats .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+.zone-stats .stat-label {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.zone-stats .stat-value {
+    color: #1e293b;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
 /* Map highlight animation for search results */
 .map-container.search-highlight,
 .canvas-container.search-highlight {
@@ -5039,7 +5086,7 @@ body::after {
         transform: scaleY(1.2);
     }
 }
-}
+
 
 @keyframes mapSearchHighlight {
     0% {

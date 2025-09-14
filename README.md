@@ -12,7 +12,7 @@ This project is designed to **predict, simulate, monitor, and assist evacuation*
 
 ## 👨‍💻 Team Information
 - **Team Lead**: Huzaifa Khan (Team NeuroNix)
-- Team Members: Rohit Ratnaparkhi, Chaitali Kohapare, Srushti Tambvekar
+- Team Member: Rohit Ratnaparkhi
 
 ---
 
